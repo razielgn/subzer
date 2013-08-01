@@ -15,7 +15,7 @@ format:
 	gofmt -s -tabs=false -tabwidth=4 -w=true subzer_test.go
 
 test: subzer_test.go subzer.go
-	go test
+	go test -v
 
 clean:
 	rm -f subzer subzer.test subzer_linux32 subzer_linux64 subzer_osx64 subzer32.exe subzer64.exe
