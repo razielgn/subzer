@@ -1,4 +1,4 @@
-# Subzer
+# Subzer [![Build Status](https://travis-ci.org/razielgn/subzer.png?branch=master)](https://travis-ci.org/razielgn/subzer)
 
 Subzer is a small CLI utility written in Go.  
 Its purpose is to convert Subrip subtitle files to a custom subtitle format.
