@@ -1,5 +1,9 @@
 all: subzer test
 
+get-deps:
+	go get "github.com/jessevdk/go-flags"
+	go get "github.com/kdar/stringio"
+
 cross:
 	GOARCH=386   GOOS=linux   go build -o subzer_linux32 subzer.go
 	GOARCH=amd64 GOOS=linux   go build -o subzer_linux64 subzer.go

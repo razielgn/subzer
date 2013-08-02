@@ -6,4 +6,4 @@ matrix:
   allow_failures:
     - go: tip
 script:
- - make test
+ - make get-deps test
