@@ -30,16 +30,16 @@ func (s *SrtBlock) String() string {
     return fmt.Sprintf("%#v", s)
 }
 
-func (s *SrtBlock) Text() []string {
-    return s.text
-}
-
 func (s *SrtBlock) TextAsLine() string {
-    return strings.Join(s.Text(), " ")
+    return strings.Join(s.text, " ")
 }
 
-func (s *SrtBlock) Duration() uint64 {
-    return ReduceDuration(s.start, s.end)
+func (s *SrtBlock) StartSeconds() uint64 {
+    return uint64(s.start.Seconds())
+}
+
+func (s *SrtBlock) EndSeconds() uint64 {
+    return uint64(s.end.Seconds())
 }
 
 func SrtBlockParse(lines []string) *SrtBlock {
@@ -60,10 +60,6 @@ func SrtBlockParse(lines []string) *SrtBlock {
     text := lines[2:]
 
     return NewSrtBlock(number, start, end, text)
-}
-
-func ReduceDuration(start time.Duration, end time.Duration) uint64 {
-    return uint64(end.Seconds()) - uint64(start.Seconds())
 }
 
 func ParseTimestamp(timestamp string) time.Duration {
@@ -130,19 +126,17 @@ func ConvertSrtStream(filename string, source io.Reader, writer io.Writer) uint6
 
     WriteFileLine(writer, 0, filename)
 
-    var prev_seconds uint64 = 0
-    var curr_seconds uint64 = 0
+    var end_seconds uint64 = 0
 
     for e := blocks.Front(); e != nil; e = e.Next() {
         block := e.Value.(*SrtBlock)
 
-        WriteFileLine(writer, prev_seconds, block.TextAsLine())
+        WriteFileLine(writer, block.StartSeconds(), block.TextAsLine())
 
-        curr_seconds = block.Duration()
-        prev_seconds += curr_seconds
+        end_seconds = block.EndSeconds()
     }
 
-    return prev_seconds
+    return end_seconds
 }
 
 func WriteTotalSeconds(seeker io.Seeker, writer io.Writer, seconds uint64) {

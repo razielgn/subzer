@@ -26,26 +26,6 @@ func TestParseTimestamp2(t *testing.T) {
     }
 }
 
-func TestReduceDurations1(t *testing.T) {
-    start := ParseTimestamp("00:00:07,390")
-    end := ParseTimestamp("00:00:09,280")
-
-    seconds := ReduceDuration(start, end)
-    if seconds != 2 {
-        t.Errorf("Expected seconds to equal 2, got %d", seconds)
-    }
-}
-
-func TestReduceDurations2(t *testing.T) {
-    start := ParseTimestamp("00:00:00,110")
-    end := ParseTimestamp("00:00:08,950")
-
-    seconds := ReduceDuration(start, end)
-    if seconds != 8 {
-        t.Errorf("Expected seconds to equal 8, got %d", seconds)
-    }
-}
-
 func TestSrtBlockEquality(t *testing.T) {
     start := (0 * time.Second)
     end := (2*time.Second + 110*time.Millisecond)
@@ -92,30 +72,30 @@ func TestSrtBlockParsing2(t *testing.T) {
 
 func SourceStringExample() string {
     return `1
-00:00:00,000 --> 00:00:02,110
-[Salim Ismail] [Global Ambassador, Singularity University] Do you think you have what it takes
+0:0:0,100 --> 0:0:8,000
+Did you know?
 
 2
-00:00:02,110 --> 00:00:04,450
-to positively impact a billion people around the world?
+0:0:9,100 --> 0:0:11,000
+Did you know?
 
 3
-00:00:04,450 --> 00:00:07,390
-Here are a few of our students that do.
+0:0:11,100 --> 0:0:14,000
+in the next 8 seconds
 
 4
-00:00:07,390 --> 00:00:09,280
-[♪ Music ♪]
+0:0:15,100 --> 0:0:17,000
+34 babies will be born
 
 `
 }
 
 func DestinationStringExample() string {
-    return "000009\twhatever.txt\n" +
-        "000000\t[Salim Ismail] [Global Ambassador, Singularity University] Do you think you have what it takes\n" +
-        "000002\tto positively impact a billion people around the world?\n" +
-        "000004\tHere are a few of our students that do.\n" +
-        "000007\t[♪ Music ♪]\n"
+    return "000017\twhatever.txt\n" +
+        "000000\tDid you know?\n" +
+        "000009\tDid you know?\n" +
+        "000011\tin the next 8 seconds\n" +
+        "000015\t34 babies will be born\n"
 }
 
 func TestConversion1(t *testing.T) {
